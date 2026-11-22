@@ -9,6 +9,9 @@ queries against them — one symbol, one bounded section — so a session reads 
 instead of a map, and stale model data is caught mechanically instead of costing a
 session.
 
+**Not a marketplace.** This is a local, file-based pipeline for coding agents; it
+is not affiliated with agent-alley.com or any hosted agent marketplace.
+
 The package ships the tooling that maintains that model — the codemap generator, the
 `modev` query CLI, the lints and their self-check — together with generic
 **templates** for a repo's own `agents/`: the role briefs, the task templates, and
