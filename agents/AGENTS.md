@@ -18,5 +18,6 @@ hand-edit a generated map.
 If you are blocked, or need a decision only the operator can make, end with
 `Next: operator — <the one action>`.
 
-Roles, templates and the knowledge bases are added when the pipeline is
-extracted from `conveyor-engine-arena`; this file is the placeholder.
+The generic role briefs and templates live in `agents/templates/` (see its
+README for the placeholder vocabulary); a host repo receives them through
+`modev init`. This file is this package's own placeholder instruction file.

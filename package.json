@@ -1,6 +1,6 @@
 {
   "name": "agent-alley",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A multi-role agent pipeline for model-driven development.",
   "type": "module",
   "license": "MIT",
@@ -15,9 +15,20 @@
     "agents",
     "src",
     "test",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "test": "node --test test/*.test.mjs"
+    "check": "node src/check.mjs",
+    "self-check": "node src/self-check.mjs",
+    "test": "node --test test/*.test.mjs",
+    "verify": "npm run check && npm run self-check && npm run test",
+    "codemap": "node src/codemap.ts"
+  },
+  "bin": {
+    "modev": "./src/cli.mjs"
+  },
+  "dependencies": {
+    "typescript": "^5.8.2"
   }
 }
