@@ -1,0 +1,23 @@
+{
+  "name": "agent-alley",
+  "version": "0.0.1",
+  "description": "A multi-role agent pipeline for model-driven development.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "files": [
+    "agents",
+    "src",
+    "test",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}
