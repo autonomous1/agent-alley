@@ -38,6 +38,10 @@ decision entry, or the **prototype/report** this task productionizes (a POC row,
 research report). If it can't cite one, the task is speculative — stop and
 reconsider.>
 
+**Rapid prototype solution:** <when this task productionizes a working driver, its
+path — the coder ports it and does not re-derive. Delete the line for a fresh
+task.>
+
 **Knowledge base:** <the KB file(s) and section(s) this task touches, with the
 reason. E.g. `<layer>-model.md` §13 (the state model) and `<layer>-flow.md` §5;
 `<layer>-kb.md` §13. Name one half, not both: the section decides the file. Query
@@ -89,6 +93,17 @@ subsection only when the shape of the code is not obvious from the prose.>
 2. <step>
 3. <step>
 
+### Migration analysis
+
+<Prototype-derived tasks only. One row per prototype step: the driver's operation,
+the constant or guard it relies on (and the failure that put it there), and the
+source behaviour that must reproduce it. A dropped step, a changed constant or a
+swapped order is a divergence — justify it here or keep the driver's shape.>
+
+| driver step (operation) | relies on (const / guard / order) | source behaviour that must match |
+|---|---|---|
+| <…> | <…> | <…> |
+
 ### Implementation note
 
 <Concrete code the executor can paste and adjust. Full module if new; exact diff
@@ -113,6 +128,9 @@ scoped tests, 0 fail**. Do not run the full `{{test_cmd}}` — it is the merge g
 in the report.>
 <- **Fail-first is demonstrated** — report includes the failing run before the fix
 and the passing run after, both verbatim.>
+<- **Prototype parity** (prototype-derived tasks only): after the port, the live lane
+runs the driver's scenario against the product path and both outputs are pasted. A
+unit test is not parity.>
 <- `{{codemap_check_cmd}}` passes.>
 <- Codemap delta captured via `mkdir -p {{task_dir}}/logs && cp agents/codemap.md
 /tmp/codemap-prev.md && {{codemap_cmd}} && git diff --no-index /tmp/codemap-prev.md

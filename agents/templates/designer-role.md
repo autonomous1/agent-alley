@@ -35,7 +35,23 @@ model statically, write the spike instead of a task.
 **A proven POC is a task.** When the ledger has a `proven` row whose behaviour is
 wanted, draft the coder task from it in one pass: cite the script and its report in
 the Architecture note and the Files table, and set the row to `proposed`. Do not
-re-design what the prototype already measured.
+not re-design what the prototype already measured.
+
+**A proven POC is a migration, not a fresh design.** A prototype that works live
+carries fixes the prose does not: an order, a guard, a threshold that exists because
+of a failure already seen. The coder must be told that a working prototype exists and
+must port it, not re-derive it. Every POC-derived task carries:
+
+- `**Rapid prototype solution:** <the driver path>` as the first line of the
+  **Architecture note**;
+- a **Migration analysis** section: one row per prototype step — the driver's
+  operation, the constant/guard it relies on, and the source behaviour that must
+  reproduce it;
+- a **prototype-parity acceptance**: after the port, the live lane runs the driver's
+  scenario against the product path and pastes both outputs.
+
+A unit test proves the port matches the test, not the prototype: a port can pass its
+tests and fail live where the driver works.
 
 **Resources**
 
