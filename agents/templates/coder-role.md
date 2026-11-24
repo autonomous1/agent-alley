@@ -19,7 +19,14 @@ spec. Do not re-read the task or `AGENTS.md` for "context".
 
 **A prototype-derived task is a migration.** When the task names a **rapid prototype
 solution**, read the driver in full before the source — it is the reference
-implementation. Enumerate its ordered operations, constants, thresholds and guards,
+implementation. The driver must be self-contained: if it imports the behaviour under
+test, there is nothing to port — it is a production fix, and the task must say so.
+
+**The prototype is a package fork.** When the task cites a `proto/` diff, the
+migration is that diff, file by file: apply each hunk to the source tree (or
+re-derive it with the same order and constants) and keep the migration map per
+file. The parity run is the runner's source-tree mode — nothing in the probe is
+rewired — and `proto/` is deleted once the port lands. Enumerate its ordered operations, constants, thresholds and guards,
 and keep a mapping in the report (driver step → source function). A step you drop, a
 constant you change, or an order you swap is a divergence: justify it in the report
 or keep the driver's shape. Unit tests mirror the driver; a live run against the
@@ -190,6 +197,7 @@ test, output exactly this block:
 PRE-FLIGHT
 Task: <number + title>
 Files to edit: <exact paths from the Files table>
+Base tree: <the task's Base tree line; the uncommitted paths it names, if any>
 Symbols verified in source: <name → file:signature>
 Model queries: <the exact model commands you will run>
 Existing tests to run: <file::test name>
@@ -216,6 +224,12 @@ only when, after checking source:
 - the Files table forbids a file you must edit;
 - the source and the task disagree about a required API or behavior;
 - the task has contradictory acceptance clauses;
+- a source file you must edit is already dirty in the working tree and the task
+  does not name that change in its **Base tree** (your diff would carry it, and the
+  report would misattribute it);
+- a cited measurement or fail-first needs a change that is not in `HEAD` and is not
+  named in the Base tree — you cannot reproduce the number the task was written
+  against;
 - a sibling repo/path is required but not named by the task.
 
 A stale codemap entry, a shifted line number, or a missing generated artifact is

@@ -13,6 +13,8 @@ source file. Do not scroll or re-open `codemap.md`.
 {{protected}}. Do not read memory or skill bodies (see above).
 **Node:** start shell commands with the prefix in the **Repo profile**.
 **Artifacts:** logs, fail-first output, scoped test output, and codemap diffs go
+
+**Base tree:** <the commit this task is written against (`git rev-parse --short HEAD`) plus any prerequisite task or uncommitted paths. If a cited measurement or fail-first needs a change that is not in that commit, name the path and make landing it step 0; the coder's tree must be the designer's tree. A task that cites a dirty-tree result without naming it is invalid.>
 under `{{task_dir}}/logs/` (name `<task>-<what>.log` / `<task>-codemap.diff`); the
 report goes under `{{task_dir}}/reports/`; live traces under `{{task_dir}}/live/`.
 Never write these to the repo root.
@@ -38,7 +40,7 @@ decision entry, or the **prototype/report** this task productionizes (a POC row,
 research report). If it can't cite one, the task is speculative — stop and
 reconsider.>
 
-**Rapid prototype solution:** <when this task productionizes a working driver, its
+**Rapid prototype solution:** <the published diff of the prototype fork (`git diff --no-index <package>/src <package>/proto`, captured in the task's log) and the base commit — the coder integrates the diff and does not re-derive. The fork is tracked while the branch lives; the diff and the driver are the spec. Delete the line for a fresh task.>
 path — the coder ports it and does not re-derive. Delete the line for a fresh
 task.>
 

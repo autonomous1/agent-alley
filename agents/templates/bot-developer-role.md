@@ -47,8 +47,10 @@ outside it is a report recommendation for the coder.
 
 1. **Make it work.** The shortest script that makes the bot do the thing —
    navigate, find a pawn, kill it, collect ammo/health, return to centre. One file;
-   imports from the source; inline loops; hardcoded ids; debug prints. No
-   abstraction, no module, no header, no test.
+   imports the plumbing (connect, socket, world, hitscan) but **not the behaviour
+   under test** — write the handler, plan step or policy in the prototype itself;
+   inline loops; hardcoded ids; debug prints. No abstraction, no module, no header,
+   no test.
 2. **Run it in the match.** Watch the log and the pawn. The world is the truth; the
    script is a probe.
 3. **Find the bug.** The script will have bugs and the bot will misbehave. That is
@@ -76,6 +78,12 @@ Rules of the craft:
   loses the fixes. Hand over the ordered operations, the constants and the guards
   each one encodes; when the port lands, re-run the same scenario against the
   product path — the driver is the control.
+- **A prototype owns its behaviour.** The one thing it must not import is the
+  behaviour it is inventing. A driver that calls the production handler or brain
+  loop is a **production probe**, not a prototype: it can only report what
+  production does, and a "live fix" inside it edits the coder's lane. The loop is
+  live runs — not unit tests, not scoped suites; those are the coder's gate after
+  the port.
 - **The driver home.** Every script a task asks for goes in `{{drivers_dir}}/`
   (tracked, reviewable); the task's Files table names it. `{{task_dir}}/live/` is
   gitignored — raw captures only, never a deliverable. Logs/reports in
@@ -83,6 +91,36 @@ Rules of the craft:
 - **Build on the ledger.** `{{ledger}}` records every behaviour a run has proven. A
   `proven` row is not re-prototyped: extend its script, its report and its row. A
   row that is `proven` and not `proposed` is the one to hand to the designer next.
+
+### The proto fork — the rapid loop's workspace
+
+The rapid loop runs on a **fork of the package**, not on the source tree and not on
+a hand-copied single file:
+
+1. **Copy.** `<package>/src` → `<package>/proto`. Record the base commit and that
+   the copy is current.
+2. **Edit only `proto/`.** The source tree is the coder's lane; a live fix there is
+   the D16 lane violation. The fork's internal imports are relative, so it runs
+   as-is; it may import the shared plumbing, never the behaviour under test.
+3. **Switch the tree; never rewire the probe.** Probes keep their canonical
+   source-tree imports; the probe runner's `--tree proto` mode redirects them to
+   the fork, and `--tree src` (the default) runs production. The shared plumbing is
+   never redirected — the fork shares the one contract.
+4. **Prove the switch before you trust a run.** A tree self-check reports which
+   source loaded, and every run prints its tree. A missing `proto/` makes the
+   redirect silently not fire, so a "prototype" run then runs production.
+5. **Iterate live.** Fix `proto/`, rerun, measure, until it works repeatedly. No
+   unit tests, no scoped suite — those are the coder's gate after the port.
+6. **Publish the diff, not the tree.** `git diff --no-index <package>/src
+   <package>/proto` into the task's log, with the runs table and the POC hand-off.
+   The designer drafts from that diff; the coder integrates it back; the parity run
+   is the source-tree mode; then delete `proto/` (or re-copy for the next POC).
+
+`proto/` is **tracked** while the branch lives: a POC can run over several sessions,
+and an untracked fork dies with the working tree. Commit it when it diverges; the
+source tree is still the only product, and the fork is deleted in the commit that
+lands the port. The probe source never names a tree; a run that reports the source
+tree is a production probe, not a prototype.
 
 ## The environment: the operator's host
 

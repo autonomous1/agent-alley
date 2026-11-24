@@ -53,6 +53,27 @@ must port it, not re-derive it. Every POC-derived task carries:
 A unit test proves the port matches the test, not the prototype: a port can pass its
 tests and fail live where the driver works.
 
+**First check that the driver is a prototype.** Read its imports. A prototype
+imports the plumbing (connect, socket, world) and implements the behaviour itself; a
+driver that imports the behaviour under test (`createCommandHost`, `runMission`) is a
+**production probe**. It proves what production already does, its "live fixes" were
+production edits outside the coder's lane, and the unit tests against that same file
+pass while the live run disagrees. If the row's script is a production probe, say so
+and draft a **production fix**, not a port.
+
+**The POC hand-off is the fork diff.** The live lane runs on a gitignored
+`<package>/proto/` fork (tracked while it lives) and publishes the diff against `<package>/src`. Check that
+the runs report the proto tree (the probes keep their canonical imports; the runner
+switches the tree); cite the diff and its base commit in the task's **Rapid
+prototype solution** line, and build the migration analysis file by file.
+
+**The base tree is part of the contract.** Run `git status` before drafting. A
+measurement is evidence only for the tree it was taken on: if the run that produced
+your numbers had uncommitted changes in it, a coder on `HEAD` cannot reproduce them.
+Either land the prerequisite first (a task the spec cites) or re-take the measurement
+on `HEAD`. Every task carries a **Base tree** line; a cited number the coder cannot
+reproduce on its own tree is fiction, not evidence.
+
 **Resources**
 
 - `{{model_cli}}` — the query surface over the codemap and the KBs: `query

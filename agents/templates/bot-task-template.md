@@ -18,7 +18,12 @@ full-server rejection and the stale-pawn confusion.
 > **This is a run/prototype, not a code change.** The bot-developer measures,
 > diagnoses, and recommends; the coder implements.
 > Write the run's script under `{{drivers_dir}}/<name>.<ext>` — tracked and
-> reviewable; the **Files** table names it. It is a rough probe, not a module: when
+> reviewable; the **Files** table names it. The script implements the behaviour
+> itself, or imports it from the **proto fork** (a tracked copy of the package's
+> source, reached with the runner's tree switch — the source keeps its canonical
+> imports and the runner redirects them): it imports the plumbing, never the source
+> tree's behaviour under test — a run that reports the source tree is a **production
+> probe**, not a prototype. It is a rough probe, not a module: when
 > it works repeatedly and the runs table shows it, the script plus its measurements
 > is a **proof-of-concept for the designer**, who drafts the production task from it;
 > the coder builds that. `{{task_dir}}/live/` is gitignored and is for raw captures
