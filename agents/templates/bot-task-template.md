@@ -10,6 +10,9 @@ evidence is the live log + this file.
 **Artifacts:** every log, trace, capture, and diff goes under `{{task_dir}}/logs/`
 (`<NN>-<what>.log`, `<NN>-trace.json`); the analysis/report under
 `{{task_dir}}/reports/`. Never the repo root. The report links the exact paths.
+**Build:** never run the build — it writes the shared output directory, which the
+coder's scoped tests also build and read. Run with `--attach` or `--no-build`; if a
+build is required, the operator runs it.
 **Safety:** one long-lived session per trial; clean `close()`; wait before any
 retry; never more than one bot in the live environment while the operator is
 playing; never target the operator's pawn. Leftover seats are the known cause of a

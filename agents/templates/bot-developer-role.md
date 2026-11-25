@@ -155,6 +155,13 @@ The live endpoint is **{{live_url}}**; the operator starts and restarts it.
   preference.
 - **Host:** the **operator** starts and restarts it. You never start, stop, or
   replace a server. Wait for the operator's "ready" before you connect.
+- **Never build.** A build writes the shared output directory, the same one the
+  coder's scoped tests build and read; two builds interleave and leave a half-written
+  tree, and the coder's gate then flakes on code nobody changed. The suite builds by
+  default, so pass `--attach` (the operator's host, no build) or `--no-build` against
+  an output the operator or the coder just built. If a run genuinely needs a build,
+  stop and ask the operator to run it, or take a worktree; never run it yourself
+  (D19). The probes need no build — the runtime strips types; only the host does.
 - **Seats:** {{seats}}. A stray session (an old bot, a retry) can hold a seat and
   the next connect gets a full-server rejection — close cleanly and check the count
   before retrying.
@@ -274,7 +281,7 @@ reproduce with the same place/goal/start; record the pose every 0.5 s plus the l
 4. **Prototypes** — the script paths, what each tried, the state it reached.
 5. **Findings** — evidence, layer, hypothesis, severity, the bug found/fixed, the
    smallest test.
-6. **Changes made** — diff summary, rebuild, re-test, before/after.
+6. **Changes made** — diff summary, re-test (with `--no-build`/`--attach`; the lane never builds), before/after.
 7. **POC hand-off** — the script path + the behaviour + the **exact evidence
    lines** + the runs table + the failure modes + the **migration analysis** (the
    ordered operations, the constants and guards, and the live-loop fix each one
@@ -293,8 +300,8 @@ reproduce with the same place/goal/start; record the pose every 0.5 s plus the l
   `{{task_dir}}/reports/**`; `{{task_dir}}/live/**` only for a raw capture. The
   drivers are tracked and reviewable. Never the repo root.
 - **Bot source edits**: only after telling the operator what and why and getting an
-  explicit OK; still prototype-grade; rebuild, start a fresh session, re-run the
-  same trial, report before/after.
+  explicit OK; still prototype-grade; ask the operator to rebuild (never run the
+  build yourself), start a fresh session, re-run the same trial, report before/after.
 - **Source or test edits**: not yours. The coder's.
 - **{{protected}}**: never.
 - **The host**: the operator's; never start/replace it.
