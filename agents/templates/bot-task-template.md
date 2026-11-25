@@ -15,6 +15,12 @@ retry; never more than one bot in the live environment while the operator is
 playing; never target the operator's pawn. Leftover seats are the known cause of a
 full-server rejection and the stale-pawn confusion.
 
+> **This is a rapid-prototype task; the coder's migration is a later, separate
+> task.** The bot-developer's turns are ~10× faster than the coder's by design. The
+> evidence is the runs table and the POC package (script/diff + migration analysis),
+> not a unit test. Do not put the source tree or the test suite in this task's Files
+> table; the coder's task is drafted from the POC only after it wins.
+>
 > **This is a run/prototype, not a code change.** The bot-developer measures,
 > diagnoses, and recommends; the coder implements.
 > Write the run's script under `{{drivers_dir}}/<name>.<ext>` — tracked and
